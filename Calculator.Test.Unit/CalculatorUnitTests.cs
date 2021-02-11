@@ -73,5 +73,21 @@ namespace Calculator.Test.Unit
         {
             Assert.That(_uut.Divide(divisor, dividend), Is.EqualTo(result));
         }
+
+        [Test]
+        public void Accumulator_Clear_Empty()
+        {
+            _uut.Clear();
+            Assert.That(_uut.Accumulator, Is.EqualTo(0));
+        }
+
+        [TestCase(4, 2, 6)]
+        [TestCase(0, 0, 0)]
+        [TestCase(-4, 2, -2)]
+        public void Accumulator_Arithemtic_Test(double a, double b, double result)
+        {
+            _uut.Add(a, b);
+            Assert.That(_uut.Accumulator, Is.EqualTo(result));
+        }
     }
 }
