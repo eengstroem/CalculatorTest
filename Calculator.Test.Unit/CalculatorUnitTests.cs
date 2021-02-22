@@ -67,16 +67,23 @@ namespace Calculator.Test.Unit
         [TestCase(11, 5, 2.2)]
         [TestCase(9, 0.5, 18)]
         [TestCase(0, 2, 0)]
-        [TestCase(2, 0, 0)]
-        [TestCase(0, 0, 0)]
         public void Divide_ResultIsCorrect(double divisor, double dividend, double result)
         {
             Assert.That(_uut.Divide(divisor, dividend), Is.EqualTo(result));
         }
 
+        [TestCase(2, 0, 0)]
+        [TestCase(0, 0, 0)]
+        public void DivideZero_CatchException(double divisor, double dividend, double result)
+        {
+            Assert.That(() => _uut.Divide(divisor, dividend),
+                Throws.TypeOf<DivideByZeroException>());
+        }
+
         [Test]
         public void Accumulator_Clear_Empty()
         {
+            _uut.Add(2, 2);
             _uut.Clear();
             Assert.That(_uut.Accumulator, Is.EqualTo(0));
         }
@@ -84,9 +91,45 @@ namespace Calculator.Test.Unit
         [TestCase(4, 2, 6)]
         [TestCase(0, 0, 0)]
         [TestCase(-4, 2, -2)]
-        public void Accumulator_Arithemtic_Test(double a, double b, double result)
+        public void Accumulator_Arithemtic_Add_Test(double a, double b, double result)
         {
             _uut.Add(a, b);
+            Assert.That(_uut.Accumulator, Is.EqualTo(result));
+        }
+
+        [TestCase(4, 2, 16)]
+        [TestCase(0, 0, 1)]
+        [TestCase(-4, 2, 16)]
+        public void Accumulator_Arithemtic_Power_Test(double a, double b, double result)
+        {
+            _uut.Power(a, b);
+            Assert.That(_uut.Accumulator, Is.EqualTo(result));
+        }
+
+        [TestCase(4, 2, 2)]
+        [TestCase(0, 0, 0)]
+        [TestCase(-4, 2, -6)]
+        public void Accumulator_Arithemtic_Subtract_Test(double a, double b, double result)
+        {
+            _uut.Subtract(a, b);
+            Assert.That(_uut.Accumulator, Is.EqualTo(result));
+        }
+
+        [TestCase(4, 2, 2)]
+        [TestCase(0, 0, 0)]
+        [TestCase(-4, 2, -2)]
+        public void Accumulator_Arithemtic_Divide_Test(double a, double b, double result)
+        {
+            try
+            {
+                _uut.Divide(a, b);
+            } 
+            catch(DivideByZeroException)
+            {
+                Console.WriteLine("Division by 0");
+            }
+
+            
             Assert.That(_uut.Accumulator, Is.EqualTo(result));
         }
     }

@@ -33,8 +33,8 @@ namespace Calculator
             }
             else
             {
-                Console.WriteLine("You cannot divide by 0");
-                return Accumulator = 0; 
+                Accumulator = 0;
+                throw new DivideByZeroException("You cannot divide by 0");
             }
 
         }
